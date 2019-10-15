@@ -147,30 +147,6 @@ Svc::BufferManager fileUplinkBufferManager("fileUplinkBufferManager", UPLINK_BUF
 Ref::SignalGen SG1("signalGen1");
 Svc::HealthImpl health("health");
 
-Ref::SignalGen SG2
-#if FW_OBJECT_NAMES == 1
-("signalGen2")
-#endif
-;
-
-Ref::SignalGen SG3
-#if FW_OBJECT_NAMES == 1
-("signalGen3")
-#endif
-;
-
-Ref::SignalGen SG4
-#if FW_OBJECT_NAMES == 1
-("signalGen4")
-#endif
-;
-
-Ref::SignalGen SG5
-#if FW_OBJECT_NAMES == 1
-("signalGen5")
-#endif
-;
-
 Svc::AssertFatalAdapterComponentImpl fatalAdapter
 #if FW_OBJECT_NAMES == 1
 ("fatalAdapter")
@@ -245,10 +221,6 @@ void constructApp(int port_number, char* hostname) {
     fileUplinkBufferManager.init(0);
     fileDownlinkBufferManager.init(1);
     SG1.init(10,0);
-	SG2.init(10,1);
-	SG3.init(10,2);
-	SG4.init(10,3);
-	SG5.init(10,4);
 	fatalAdapter.init(0);
 	fatalHandler.init(0);
 	health.init(25,0);
@@ -265,10 +237,6 @@ void constructApp(int port_number, char* hostname) {
     prmDb.regCommands();
     fileDownlink.regCommands();
     SG1.regCommands();
-    SG2.regCommands();
-    SG3.regCommands();
-    SG4.regCommands();
-	SG5.regCommands();
 	health.regCommands();
 	pingRcvr.regCommands();
 
