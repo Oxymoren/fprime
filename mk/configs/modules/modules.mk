@@ -92,7 +92,9 @@ REF_MODULES := \
 	Ref/RecvBuffApp \
 	Ref/SendBuffApp \
 	Ref/SignalGen \
-	Ref/PingReceiver
+	Ref/PingReceiver \
+	Ref/DemoDriverPort \
+	Ref/DemoDriver
 	
 Ref_MODULES := \
 	\
