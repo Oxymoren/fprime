@@ -134,31 +134,11 @@ Svc::PrmDbImpl prmDb
 #endif
 ;
 
-Ref::PingReceiverComponentImpl pingRcvr
-#if FW_OBJECT_NAMES == 1
-                    ("PngRecv")
-#endif
-;
-
 Svc::FileUplink fileUplink ("fileUplink");
 Svc::FileDownlink fileDownlink ("fileDownlink", DOWNLINK_PACKET_SIZE);
 Svc::BufferManager fileDownlinkBufferManager("fileDownlinkBufferManager", DOWNLINK_BUFFER_STORE_SIZE, DOWNLINK_BUFFER_QUEUE_SIZE);
 Svc::BufferManager fileUplinkBufferManager("fileUplinkBufferManager", UPLINK_BUFFER_STORE_SIZE, UPLINK_BUFFER_QUEUE_SIZE);
-Ref::SignalGen SG1("signalGen1");
 Svc::HealthImpl health("health");
-
-Svc::AssertFatalAdapterComponentImpl fatalAdapter
-#if FW_OBJECT_NAMES == 1
-("fatalAdapter")
-#endif
-;
-
-Svc::FatalHandlerComponentImpl fatalHandler
-#if FW_OBJECT_NAMES == 1
-("fatalHandler")
-#endif
-;
-
 
 #if FW_OBJECT_REGISTRATION == 1
 
@@ -220,11 +200,7 @@ void constructApp(int port_number, char* hostname) {
     fileDownlink.init(30, 0);
     fileUplinkBufferManager.init(0);
     fileDownlinkBufferManager.init(1);
-    SG1.init(10,0);
-	fatalAdapter.init(0);
-	fatalHandler.init(0);
 	health.init(25,0);
-	pingRcvr.init(10);
     // Connect rate groups to rate group driver
     constructRefArchitecture();
 
@@ -236,9 +212,7 @@ void constructApp(int port_number, char* hostname) {
     eventLogger.regCommands();
     prmDb.regCommands();
     fileDownlink.regCommands();
-    SG1.regCommands();
 	health.regCommands();
-	pingRcvr.regCommands();
 
     // read parameters
     prmDb.readParamFile();
@@ -258,7 +232,6 @@ void constructApp(int port_number, char* hostname) {
         {3,5,fileUplink.getObjName()}, // 7
         {3,5,blockDrv.getObjName()}, // 8
         {3,5,fileDownlink.getObjName()}, // 9
-        {3,5,pingRcvr.getObjName()}, // 10
     };
 
     // register ping table
@@ -282,8 +255,6 @@ void constructApp(int port_number, char* hostname) {
 
     fileDownlink.start(0, 100, 10*1024);
     fileUplink.start(0, 100, 10*1024);
-
-    pingRcvr.start(0, 100, 10*1024);
 
     // Initialize socket server
     sockGndIf.startSocketTask(100, 10*1024, port_number, hostname, Svc::SocketGndIfImpl::SEND_UDP);
