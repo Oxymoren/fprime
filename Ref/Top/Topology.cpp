@@ -81,6 +81,25 @@ Ref::RecvBuffImpl recvBuffComp
 #endif
 ;
 
+
+Ref::DemoSchedulerComponentImpl schedulerDemo
+#if FW_OBJECT_NAMES == 1
+                    ("SDE")
+#endif
+;
+
+Ref::DemoDriverComponentImpl demoDriver
+#if FW_OBJECT_NAMES == 1
+    ("demoDriver")
+#endif
+;
+
+Ref::DemoManagerComponentImpl demoManager
+#if FW_OBJECT_NAMES == 1
+    ("demoManager")
+#endif
+;
+
 Ref::SendBuffImpl sendBuffComp
 #if FW_OBJECT_NAMES == 1
                     ("SBC")
@@ -134,66 +153,11 @@ Svc::PrmDbImpl prmDb
 #endif
 ;
 
-Ref::PingReceiverComponentImpl pingRcvr
-#if FW_OBJECT_NAMES == 1
-                    ("PngRecv")
-#endif
-;
-
 Svc::FileUplink fileUplink ("fileUplink");
 Svc::FileDownlink fileDownlink ("fileDownlink", DOWNLINK_PACKET_SIZE);
 Svc::BufferManager fileDownlinkBufferManager("fileDownlinkBufferManager", DOWNLINK_BUFFER_STORE_SIZE, DOWNLINK_BUFFER_QUEUE_SIZE);
 Svc::BufferManager fileUplinkBufferManager("fileUplinkBufferManager", UPLINK_BUFFER_STORE_SIZE, UPLINK_BUFFER_QUEUE_SIZE);
-Ref::SignalGen SG1("signalGen1");
 Svc::HealthImpl health("health");
-
-Ref::SignalGen SG2
-#if FW_OBJECT_NAMES == 1
-("signalGen2")
-#endif
-;
-
-Ref::SignalGen SG3
-#if FW_OBJECT_NAMES == 1
-("signalGen3")
-#endif
-;
-
-Ref::SignalGen SG4
-#if FW_OBJECT_NAMES == 1
-("signalGen4")
-#endif
-;
-
-Ref::SignalGen SG5
-#if FW_OBJECT_NAMES == 1
-("signalGen5")
-#endif
-;
-
-Svc::AssertFatalAdapterComponentImpl fatalAdapter
-#if FW_OBJECT_NAMES == 1
-("fatalAdapter")
-#endif
-;
-
-Svc::FatalHandlerComponentImpl fatalHandler
-#if FW_OBJECT_NAMES == 1
-("fatalHandler")
-#endif
-;
-
-Ref::DemoDriverComponentImpl demoDriver
-#if FW_OBJECT_NAMES == 1
-    ("demoDriver")
-#endif
-;
-
-Ref::DemoManagerComponentImpl demoManager
-#if FW_OBJECT_NAMES == 1
-    ("demoManager")
-#endif
-;
 
 #if FW_OBJECT_REGISTRATION == 1
 
@@ -214,6 +178,11 @@ void constructApp(int port_number, char* hostname) {
 #if FW_PORT_TRACING
     Fw::PortBase::setTrace(false);
 #endif    
+
+    // Init Demo Components
+    schedulerDemo.init(10,0);
+    demoDriver.init();
+    demoManager.init(10,0);
 
     // Initialize rate group driver
     rateGroupDriverComp.init();
@@ -255,21 +224,12 @@ void constructApp(int port_number, char* hostname) {
     fileDownlink.init(30, 0);
     fileUplinkBufferManager.init(0);
     fileDownlinkBufferManager.init(1);
-    SG1.init(10,0);
-	SG2.init(10,1);
-	SG3.init(10,2);
-	SG4.init(10,3);
-	SG5.init(10,4);
-	fatalAdapter.init(0);
-	fatalHandler.init(0);
 	health.init(25,0);
-	pingRcvr.init(10);
-    demoDriver.init();
-    demoManager.init(10,0);
     // Connect rate groups to rate group driver
     constructRefArchitecture();
 
     /* Register commands */
+    schedulerDemo.regCommands();
     sendBuffComp.regCommands();
     recvBuffComp.regCommands();
     cmdSeq.regCommands();
@@ -277,13 +237,7 @@ void constructApp(int port_number, char* hostname) {
     eventLogger.regCommands();
     prmDb.regCommands();
     fileDownlink.regCommands();
-    SG1.regCommands();
-    SG2.regCommands();
-    SG3.regCommands();
-    SG4.regCommands();
-	SG5.regCommands();
 	health.regCommands();
-	pingRcvr.regCommands();
 
     demoDriver.regCommands();
     demoManager.regCommands();
@@ -308,7 +262,6 @@ void constructApp(int port_number, char* hostname) {
         {3,5,fileUplink.getObjName()}, // 7
         {3,5,blockDrv.getObjName()}, // 8
         {3,5,fileDownlink.getObjName()}, // 9
-        {3,5,pingRcvr.getObjName()}, // 10
     };
 
     // register ping table
@@ -319,6 +272,8 @@ void constructApp(int port_number, char* hostname) {
     rateGroup1Comp.start(0, 120,10 * 1024);
     rateGroup2Comp.start(0, 119,10 * 1024);
     rateGroup3Comp.start(0, 118,10 * 1024);
+    // start scheduler
+    schedulerDemo.start(0, 130,10 * 1024);
     // start driver
     blockDrv.start(0,140,10*1024);
     // start dispatcher
@@ -333,10 +288,8 @@ void constructApp(int port_number, char* hostname) {
     fileDownlink.start(0, 100, 10*1024);
     fileUplink.start(0, 100, 10*1024);
 
-    pingRcvr.start(0, 100, 10*1024);
-
     demoManager.start(0,100,10*1024);
-
+    
     // Initialize socket server
     sockGndIf.startSocketTask(100, 10*1024, port_number, hostname, Svc::SocketGndIfImpl::SEND_UDP);
 
@@ -376,6 +329,7 @@ void runcycles(NATIVE_INT_TYPE cycles) {
 }
 
 void exitTasks(void) {
+    schedulerDemo.exit();
     rateGroup1Comp.exit();
     rateGroup2Comp.exit();
     rateGroup3Comp.exit();

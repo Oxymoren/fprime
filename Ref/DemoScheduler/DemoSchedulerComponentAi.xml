@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../Autocoders/Python/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<component name="DemoScheduler" kind="active" namespace="Ref">
+    <import_port_type>Ref/DemoSchdManPort/DemoSchdManPortAi.xml</import_port_type>
+    <import_port_type>Svc/Sched/SchedPortAi.xml</import_port_type>
+    <import_port_type>Fw/Time/TimePortAi.xml</import_port_type>
+    <comment>A simple demo scheduler component</comment>
+    <ports>
+        Output ping port 
+        <port name="ManagerOut" data_type="Ref::DemoSchdManPort" kind="output" max_number="1">
+            <comment>
+            An output port for the Manager
+            </comment>
+        </port>
+        <port name="SchedIn" data_type="Sched" kind="async_input">
+            <comment>
+            The rate group scheduler input
+            </comment>
+        </port>
+        <port name="Time" data_type="Fw::Time"  kind="output" role="TimeGet" max_number="1">
+            <comment>
+            The time getting port
+            </comment>
+        </port>
+    </ports>
+    <commands>
+        <command kind="async" opcode="0" mnemonic="Demo_Scheduler_Run_Now">
+            <comment>
+            Command to schedule an immidate run of the demo manager. 
+            </comment>
+        </command>
+        <command kind="async" opcode="1" mnemonic="Demo_Scheduler_Run_Future">
+            <comment>
+            Command to schedule an immidate run of the demo manager. 
+            </comment>
+            <args>
+                <arg name="Time" type="U32" comment="Time Value">
+                    <comment>Specifies at what time to execute the command </comment>
+                </arg>
+            </args>
+        </command>
+    </commands>
+    <telemetry>
+        <channel id="0" name="Demo_Scheduler_Queue_Size" data_type="U32">
+            <comment>
+            Number of tasks in the scheduler queue. 
+            </comment>
+        </channel>
+    </telemetry>
+    <telemetry>
+        <channel id="1" name="Demo_Scheduler_Curr_Time" data_type="U32">
+            <comment>
+            Current Unix Time Reading 
+            </comment>
+        </channel>
+    </telemetry>
+    <events>
+        <event id="0" name="Scheduler_CommandRecieved" severity="DIAGNOSTIC" format_string = "Task added to Scheduler queue." >
+            <comment>
+            Scheduler got task
+            </comment>
+        </event>
+     </events>
+</component>
