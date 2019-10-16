@@ -13,6 +13,7 @@
 
 #include <Ref/DemoDriver/DemoDriverComponentImpl.hpp>
 #include "Fw/Types/BasicTypes.hpp"
+#include <stdlib.h>
 
 namespace Ref {
 
@@ -68,7 +69,7 @@ namespace Ref {
     this->tlmWrite_Driver_DriverVal(newDriverValue);
     this->log_DIAGNOSTIC_Driver_CommandRecieved(newDriverValue);
     this->m_prev_value = newDriverValue;
-    this->DriverOut_out(newDriverValue);
+    this->DriverOut_out(0, newDriverValue);
   }
 
   // ----------------------------------------------------------------------
@@ -90,7 +91,7 @@ namespace Ref {
     this->tlmWrite_Driver_DriverVal(newDriverValue);
     this->log_DIAGNOSTIC_Driver_CommandRecieved(newDriverValue);
     this->m_prev_value = newDriverValue;
-    this->DriverOut_out(newDriverValue);
+    this->DriverOut_out(0, newDriverValue);
     this->cmdResponse_out(opCode,cmdSeq,Fw::COMMAND_OK);
   }
 

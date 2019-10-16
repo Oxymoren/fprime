@@ -822,11 +822,11 @@
 </connection>
 
 <connection name="DemoDriverDisp">
-	<source component="cmdDisp" port="compCmdReg" type="Cmd" num="50"/>
+	<source component="cmdDisp" port="compCmdSend" type="Cmd" num="50"/>
 	<target component="demoDriver" port="CmdDisp" type="Cmd" num="0"/>
 </connection>
 <connection name="DemoManagerDisp">
-	<source component="cmdDisp" port="compCmdReg" type="Cmd" num="51"/>
+	<source component="cmdDisp" port="compCmdSend" type="Cmd" num="51"/>
 	<target component="demoManager" port="CmdDisp" type="Cmd" num="0"/>
 </connection>
 

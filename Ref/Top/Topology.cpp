@@ -288,6 +288,8 @@ void constructApp(int port_number, char* hostname) {
     demoDriver.regCommands();
     demoManager.regCommands();
 
+    constructRefArchitecture();
+
     // read parameters
     prmDb.readParamFile();
     recvBuffComp.loadParameters();

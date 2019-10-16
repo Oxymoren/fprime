@@ -59,7 +59,7 @@ namespace Ref {
         U32 val1
     )
   {
-    this->tlmWrite_Manager_ReceivedVal(val1)
+    this->tlmWrite_Manager_ReceivedVal(val1);
   }
 
   void DemoManagerComponentImpl ::
@@ -68,8 +68,10 @@ namespace Ref {
         U32 val
     )
   {
-    #if this->m_componentEnabled == true;
-      this->ManagerOut_out(1);
+    if (this->m_componentEnabled == true)
+    {
+      this->ManagerOut_out(0, 1);
+    }
   }
 
   // ----------------------------------------------------------------------
