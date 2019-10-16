@@ -1,9 +1,9 @@
 <interface name="DemoSchdManPort" namespace="Ref">
     <comment>
-    Port to tell the scheduler to run its sequnece. 
+    Port to tell the manager to run its sequnece. 
     </comment>
     <args>
         <arg name="val" type="U32">
-		</arg>
+        </arg>
     </args>
 </interface>
