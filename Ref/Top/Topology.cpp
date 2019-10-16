@@ -81,6 +81,12 @@ Ref::RecvBuffImpl recvBuffComp
 #endif
 ;
 
+Ref::DemoDriverComponentImpl driverDemo
+#if FW_OBJECT_NAMES == 1
+                    ("DD")
+#endif
+;
+
 Ref::SendBuffImpl sendBuffComp
 #if FW_OBJECT_NAMES == 1
                     ("SBC")
@@ -160,6 +166,9 @@ void constructApp(int port_number, char* hostname) {
     Fw::PortBase::setTrace(false);
 #endif    
 
+    // Init Demo Driver
+    driverDemo.init();
+
     // Initialize rate group driver
     rateGroupDriverComp.init();
 
@@ -205,6 +214,7 @@ void constructApp(int port_number, char* hostname) {
     constructRefArchitecture();
 
     /* Register commands */
+    driverDemo.regCommands();
     sendBuffComp.regCommands();
     recvBuffComp.regCommands();
     cmdSeq.regCommands();
