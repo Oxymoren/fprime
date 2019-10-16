@@ -52,6 +52,7 @@ namespace Ref {
       private:
 
         bool m_componentEnabled;
+        U32 m_prev_value;
 
     PRIVATE:
 
@@ -76,8 +77,7 @@ namespace Ref {
       //! Command to test driver commands
       void Driver_TestDriver_cmdHandler(
           const FwOpcodeType opCode, /*!< The opcode*/
-          const U32 cmdSeq, /*!< The command sequence number*/
-          U32 set_val 
+          const U32 cmdSeq /*!< The command sequence number*/
       );
 
 

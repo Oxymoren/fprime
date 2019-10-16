@@ -16,11 +16,6 @@
             <comment>
             Command to test driver commands
             </comment>
-        <args>
-            <arg name="set_val" type="U32">
-                <comment>Forceed Value</comment>
-            </arg>
-        </args>
         </command>
     </commands>
     <telemetry>

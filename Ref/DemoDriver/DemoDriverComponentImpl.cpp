@@ -13,6 +13,7 @@
 
 #include <Ref/DemoDriver/DemoDriverComponentImpl.hpp>
 #include "Fw/Types/BasicTypes.hpp"
+#include <stdlib.h>
 
 namespace Ref {
 
@@ -31,6 +32,8 @@ namespace Ref {
 #endif
   {
     this->m_componentEnabled = true;
+    this->m_prev_value = 0;
+    this->tlmWrite_Driver_DriverVal(0);
   }
 
   void DemoDriverComponentImpl ::
@@ -57,7 +60,15 @@ namespace Ref {
         U32 val1
     )
   {
-    this->tlmWrite_Driver_DriverVal(val1);
+    U32 newDriverValue;
+    do {
+      newDriverValue = (rand() % 100) + 1;
+    }
+    while(newDriverValue == this->m_prev_value);
+
+    this->tlmWrite_Driver_DriverVal(newDriverValue);
+    this->log_DIAGNOSTIC_Driver_CommandRecieved(newDriverValue);
+    this->m_prev_value = newDriverValue;
   }
 
   // ----------------------------------------------------------------------
@@ -67,11 +78,18 @@ namespace Ref {
   void DemoDriverComponentImpl ::
     Driver_TestDriver_cmdHandler(
         const FwOpcodeType opCode,
-        const U32 cmdSeq,
-        U32 set_val
+        const U32 cmdSeq
     )
   {
-    this->tlmWrite_Driver_DriverVal(set_val);
+    U32 newDriverValue;
+    do {
+      newDriverValue = (rand() % 100) + 1;
+    }
+    while(newDriverValue == this->m_prev_value);
+
+    this->tlmWrite_Driver_DriverVal(newDriverValue);
+    this->log_DIAGNOSTIC_Driver_CommandRecieved(newDriverValue);
+    this->m_prev_value = newDriverValue;
     this->cmdResponse_out(opCode,cmdSeq,Fw::COMMAND_OK);
   }
 

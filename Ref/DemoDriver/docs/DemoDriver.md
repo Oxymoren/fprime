@@ -7,7 +7,6 @@
 |Mnemonic|ID|Description|Arg Name|Arg Type|Comment
 |---|---|---|---|---|---|
 |Driver_TestDriver|0 (0x0)|Command to test driver commands| | |
-| | | |set_val|U32|Forceed Value|
 
 ## Telemetry Channel List
 
