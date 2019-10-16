@@ -30,6 +30,7 @@ void exitTasks(void);
 #include <Drv/BlockDriver/BlockDriverImpl.hpp>
 
 #include <Ref/DemoDriver/DemoDriverComponentImpl.hpp>
+#include <Ref/DemoScheduler/DemoSchedulerComponentImpl.hpp>
 
 extern Svc::RateGroupDriverImpl rateGroupDriverComp;
 extern Svc::ActiveRateGroupImpl rateGroup1Comp, rateGroup2Comp, rateGroup3Comp;
@@ -57,6 +58,7 @@ extern Ref::SignalGen SG1 , SG2, SG3, SG4, SG5;
 extern Ref::PingReceiverComponentImpl pingRcvr;
 
 extern Ref::DemoDriverComponentImpl driverDemo;
+extern Ref::DemoSchedulerComponentImpl schedulerDemo;
 
 
 #endif
