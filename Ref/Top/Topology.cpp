@@ -81,15 +81,22 @@ Ref::RecvBuffImpl recvBuffComp
 #endif
 ;
 
-Ref::DemoDriverComponentImpl driverDemo
-#if FW_OBJECT_NAMES == 1
-                    ("DD")
-#endif
-;
 
 Ref::DemoSchedulerComponentImpl schedulerDemo
 #if FW_OBJECT_NAMES == 1
                     ("SDE")
+#endif
+;
+
+Ref::DemoDriverComponentImpl demoDriver
+#if FW_OBJECT_NAMES == 1
+    ("demoDriver")
+#endif
+;
+
+Ref::DemoManagerComponentImpl demoManager
+#if FW_OBJECT_NAMES == 1
+    ("demoManager")
 #endif
 ;
 
@@ -172,11 +179,10 @@ void constructApp(int port_number, char* hostname) {
     Fw::PortBase::setTrace(false);
 #endif    
 
-    // Init Demo Driver
-    driverDemo.init();
-
-    // Init Demo Scheduler
+    // Init Demo Components
     schedulerDemo.init(10,0);
+    demoDriver.init();
+    demoManager.init(10,0);
 
     // Initialize rate group driver
     rateGroupDriverComp.init();
@@ -223,7 +229,6 @@ void constructApp(int port_number, char* hostname) {
     constructRefArchitecture();
 
     /* Register commands */
-    driverDemo.regCommands();
     schedulerDemo.regCommands();
     sendBuffComp.regCommands();
     recvBuffComp.regCommands();
@@ -233,6 +238,11 @@ void constructApp(int port_number, char* hostname) {
     prmDb.regCommands();
     fileDownlink.regCommands();
 	health.regCommands();
+
+    demoDriver.regCommands();
+    demoManager.regCommands();
+
+    constructRefArchitecture();
 
     // read parameters
     prmDb.readParamFile();
@@ -278,6 +288,8 @@ void constructApp(int port_number, char* hostname) {
     fileDownlink.start(0, 100, 10*1024);
     fileUplink.start(0, 100, 10*1024);
 
+    demoManager.start(0,100,10*1024);
+    
     // Initialize socket server
     sockGndIf.startSocketTask(100, 10*1024, port_number, hostname, Svc::SocketGndIfImpl::SEND_UDP);
 
@@ -329,6 +341,7 @@ void exitTasks(void) {
     fileUplink.exit();
     fileDownlink.exit();
     cmdSeq.exit();
+    demoManager.exit();
 }
 
 void print_usage() {

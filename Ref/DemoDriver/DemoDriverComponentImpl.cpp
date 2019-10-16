@@ -1,6 +1,6 @@
 // ======================================================================
 // \title  DemoDriverComponentImpl.cpp
-// \author oxymoren
+// \author aleha
 // \brief  cpp file for DemoDriver component implementation class
 //
 // \copyright
@@ -69,6 +69,7 @@ namespace Ref {
     this->tlmWrite_Driver_DriverVal(newDriverValue);
     this->log_DIAGNOSTIC_Driver_CommandRecieved(newDriverValue);
     this->m_prev_value = newDriverValue;
+    this->DriverOut_out(0, newDriverValue);
   }
 
   // ----------------------------------------------------------------------
@@ -90,6 +91,7 @@ namespace Ref {
     this->tlmWrite_Driver_DriverVal(newDriverValue);
     this->log_DIAGNOSTIC_Driver_CommandRecieved(newDriverValue);
     this->m_prev_value = newDriverValue;
+    this->DriverOut_out(0, newDriverValue);
     this->cmdResponse_out(opCode,cmdSeq,Fw::COMMAND_OK);
   }
 

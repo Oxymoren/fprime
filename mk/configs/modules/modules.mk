@@ -96,6 +96,7 @@ REF_MODULES := \
 	Ref/DemoDriverPort \
 	Ref/DemoDriver \
 	Ref/DemoSchdManPort \
+	Ref/DemoManager \
 	Ref/DemoScheduler
 	
 Ref_MODULES := \

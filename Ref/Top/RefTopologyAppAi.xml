@@ -29,14 +29,14 @@
 	<import_component_type>Drv/BlockDriver/BlockDriverComponentAi.xml</import_component_type>
 	<import_component_type>Svc/FileDownlink/FileDownlinkComponentAi.xml</import_component_type>
 	<import_component_type>Svc/PassiveTextLogger/PassiveTextLoggerComponentAi.xml</import_component_type>
+	<import_component_type>Ref/DemoDriver/DemoDriverComponentAi.xml</import_component_type>
+	<import_component_type>Ref/DemoManager/DemoManagerComponentAi.xml</import_component_type>
 
    <!-- Begin Demo Component Imports -->
    <import_component_type>Ref/DemoDriver/DemoDriverComponentAi.xml</import_component_type>
    <import_component_type>Ref/DemoScheduler/DemoSchedulerComponentAi.xml</import_component_type>
 
    <!-- Begin Demo Components -->
-   <instance namespace="Ref" name="driverDemo" type="DemoDriver" base_id="9"  base_id_window="10" />
-
    <instance namespace="Ref" name="schedulerDemo" type="DemoScheduler" base_id="700"  base_id_window="10" />
 	
    <instance namespace="Svc" name="rateGroup1Comp" type="ActiveRateGroup" base_id="21"  base_id_window="20" />
@@ -79,12 +79,10 @@
 
    <instance namespace="Svc" name="textLogger" type="PassiveTextLogger" base_id="521"  base_id_window="20" />
 
+	<instance namespace="Ref" name="demoDriver" type="DemoDriver" base_id="2000" base_id_window="20"/>
+	<instance namespace="Ref" name="demoManager" type="DemoManager" base_id="2100" base_id_window="20"/>
 
 <!-- Begin Demo Telemtery Ports -->
-<connection name = "DemoDriverTlm">
-	 <source component = "driverDemo" port = "Tlm" type = "Tlm" num = "0"/>
- 	 <target component = "chanTlm" port = "TlmRecv" type = "Tlm" num = "0"/>
-</connection>
 
 <connection name = "DemoSchedulerTlm">
 	 <source component = "schedulerDemo" port = "Tlm" type = "Tlm" num = "0"/>
@@ -92,24 +90,6 @@
 </connection>
 
 <!-- Begin Demo Command Ports -->
-<connection name = "DemoDriverReg">
-	 <source component = "driverDemo" port = "CmdReg" type = "CmdReg" num = "0"/>
- 	 <target component = "cmdDisp" port = "compCmdReg" type = "CmdReg" num = "15"/>
-</connection>
-
-<connection name = "DemoDriverDisp">
-	 <source component = "cmdDisp" port = "compCmdSend" type = "Cmd" num = "15"/>
- 	 <target component = "driverDemo" port = "CmdDisp" type = "Cmd" num = "0"/>
-</connection>
-
-<connection name = "DemoDriverReply">
-	 <source component = "driverDemo" port = "CmdStatus" type = "CmdResponse" num = "0"/>
- 	 <target component = "cmdDisp" port = "compCmdStat" type = "CmdResponse" num = "0"/>
-</connection>
-
-
-
-
 <connection name = "DemoSchedulerReg">
 	 <source component = "schedulerDemo" port = "CmdReg" type = "CmdReg" num = "0"/>
  	 <target component = "cmdDisp" port = "compCmdReg" type = "CmdReg" num = "23"/>
@@ -133,6 +113,11 @@
 <connection name = "DemoSchedulerRateGroup">
 	 <source component = "rateGroup1Comp" port = "RateGroupMemberOut" type = "Sched" num = "3"/>
  	 <target component = "schedulerDemo" port = "SchedIn" type = "Sched" num = "0"/>
+</connection>
+
+<connection name = "DemoSchedManPort">
+	 <source component = "schedulerDemo" port = "ManagerOut" type = "DemoSchdManPort" num = "0"/>
+ 	 <target component = "demoManager" port = "SchedulerIn" type = "DemoSchdManPort" num = "0"/>
 </connection>
 
 
@@ -643,5 +628,69 @@
 <connection name = "Connection180">
 	 <source component = "cmdSeq" port = "cmdRegOut" type = "CmdReg" num = "0"/>
  	 <target component = "cmdDisp" port = "compCmdReg" type = "CmdReg" num = "13"/>
+</connection>
+
+<connection name="DemoDriverReg">
+	<source component="demoDriver" port="CmdReg" type="CmdReg" num="0"/>
+	<target component="cmdDisp" port="compCmdReg" type="CmdReg" num="15"/>
+</connection>
+<connection name="DemoManagerReg">
+	<source component="demoManager" port="CmdReg" type="CmdReg" num="0"/>
+	<target component="cmdDisp" port="compCmdReg" type="CmdReg" num="16"/>
+</connection>
+
+<connection name="DemoDriverDisp">
+	<source component="cmdDisp" port="compCmdSend" type="Cmd" num="15"/>
+	<target component="demoDriver" port="CmdDisp" type="Cmd" num="0"/>
+</connection>
+<connection name="DemoManagerDisp">
+	<source component="cmdDisp" port="compCmdSend" type="Cmd" num="16"/>
+	<target component="demoManager" port="CmdDisp" type="Cmd" num="0"/>
+</connection>
+
+<connection name="DemoDriverReply">
+	<source component="demoDriver" port="CmdStatus" type="CmdResponse" num="0"/>
+	<target component="cmdDisp" port="compCmdStat" type="CmdResponse" num="0"/>
+</connection>
+<connection name="DemoManagerReply">
+	<source component="demoManager" port="CmdStatus" type="CmdResponse" num="0"/>
+	<target component="cmdDisp" port="compCmdStat" type="CmdResponse" num="0"/>
+</connection>
+
+<connection name="DemoDriverLog">
+	<source component="demoDriver" port="Log" type="Log" num="0"/>
+	<target component="eventLogger" port="LogRecv" type="Log" num="0"/>
+</connection>
+<connection name="DemoManagerLog">
+	<source component="demoManager" port="Log" type="Log" num="0"/>
+	<target component="eventLogger" port="LogRecv" type="Log" num="0"/>
+</connection>
+
+<connection name="DemoDriverTextLog">
+	<source component="demoDriver" port="LogText" type="LogText" num="0"/>
+	<target component="textLogger" port="TextLogger" type="LogText" num="0"/>
+</connection>
+<connection name="DemoManagerTextLog">
+	<source component="demoManager" port="LogText" type="LogText" num="0"/>
+	<target component="textLogger" port="TextLogger" type="LogText" num="0"/>
+</connection>
+
+<connection name="DemoDriverTextTlm">
+	<source component="demoDriver" port="Tlm" type="Tlm" num="0"/>
+	<target component="chanTlm" port="TlmRecv" type="Tlm" num="0"/>
+</connection>
+<connection name="DemoManagerTextTlm">
+	<source component="demoManager" port="Tlm" type="Tlm" num="0"/>
+	<target component="chanTlm" port="TlmRecv" type="Tlm" num="0"/>
+</connection>
+
+<connection name="DemoDriverSendConnection">
+	<source component="demoDriver" port="DriverOut" type="Ref::DemoDriverPort" num="0"/>
+	<target component="demoManager" port="DriverIn" type="Ref::DemoDriverPort" num="0"/>
+</connection>
+
+<connection name="DemoManagerEvokeConnection">
+	<source component="demoManager" port="ManagerOut" type="Ref::DemoDriverPort" num="0"/>
+	<target component="demoDriver" port="ManagerIn" type="Ref::DemoDriverPort" num="0"/>
 </connection>
 </assembly>

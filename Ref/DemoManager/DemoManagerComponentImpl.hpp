@@ -1,7 +1,7 @@
 // ======================================================================
-// \title  DemoDriverComponentImpl.hpp
+// \title  DemoManagerComponentImpl.hpp
 // \author aleha
-// \brief  hpp file for DemoDriver component implementation class
+// \brief  hpp file for DemoManager component implementation class
 //
 // \copyright
 // Copyright 2009-2015, by the California Institute of Technology.
@@ -10,15 +10,15 @@
 //
 // ======================================================================
 
-#ifndef DemoDriver_HPP
-#define DemoDriver_HPP
+#ifndef DemoManager_HPP
+#define DemoManager_HPP
 
-#include "Ref/DemoDriver/DemoDriverComponentAc.hpp"
+#include "Ref/DemoManager/DemoManagerComponentAc.hpp"
 
 namespace Ref {
 
-  class DemoDriverComponentImpl :
-    public DemoDriverComponentBase
+  class DemoManagerComponentImpl :
+    public DemoManagerComponentBase
   {
 
     public:
@@ -27,9 +27,9 @@ namespace Ref {
       // Construction, initialization, and destruction
       // ----------------------------------------------------------------------
 
-      //! Construct object DemoDriver
+      //! Construct object DemoManager
       //!
-      DemoDriverComponentImpl(
+      DemoManagerComponentImpl(
 #if FW_OBJECT_NAMES == 1
           const char *const compName /*!< The component name*/
 #else
@@ -37,19 +37,19 @@ namespace Ref {
 #endif
       );
 
-      //! Initialize object DemoDriver
+      //! Initialize object DemoManager
       //!
       void init(
+          const NATIVE_INT_TYPE queueDepth, /*!< The queue depth*/
           const NATIVE_INT_TYPE instance = 0 /*!< The instance number*/
       );
 
-      //! Destroy object DemoDriver
+      //! Destroy object DemoManager
       //!
-      ~DemoDriverComponentImpl(void);
+      ~DemoManagerComponentImpl(void);
 
       private:
         bool m_componentEnabled;
-        U32 m_prev_value;
 
     PRIVATE:
 
@@ -57,11 +57,18 @@ namespace Ref {
       // Handler implementations for user-defined typed input ports
       // ----------------------------------------------------------------------
 
-      //! Handler implementation for ManagerIn
+      //! Handler implementation for DriverIn
       //!
-      void ManagerIn_handler(
+      void DriverIn_handler(
           const NATIVE_INT_TYPE portNum, /*!< The port number*/
           U32 val1 
+      );
+
+      //! Handler implementation for SchedulerIn
+      //!
+      void SchedulerIn_handler(
+          const NATIVE_INT_TYPE portNum, /*!< The port number*/
+          U32 val 
       );
 
     PRIVATE:
@@ -70,9 +77,23 @@ namespace Ref {
       // Command handler implementations
       // ----------------------------------------------------------------------
 
-      //! Implementation for Driver_TestDriver command handler
-      //! Command to test driver commands
-      void Driver_TestDriver_cmdHandler(
+      //! Implementation for Manager_Test_Manager command handler
+      //! 
+      void Manager_Test_Manager_cmdHandler(
+          const FwOpcodeType opCode, /*!< The opcode*/
+          const U32 cmdSeq /*!< The command sequence number*/
+      );
+
+      //! Implementation for Manager_Disable_Manager command handler
+      //! 
+      void Manager_Disable_Manager_cmdHandler(
+          const FwOpcodeType opCode, /*!< The opcode*/
+          const U32 cmdSeq /*!< The command sequence number*/
+      );
+
+      //! Implementation for Manager_Enable_Manager command handler
+      //! 
+      void Manager_Enable_Manager_cmdHandler(
           const FwOpcodeType opCode, /*!< The opcode*/
           const U32 cmdSeq /*!< The command sequence number*/
       );

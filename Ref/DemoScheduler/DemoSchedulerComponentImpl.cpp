@@ -61,9 +61,9 @@ namespace Ref {
   {
     U32 currTime = this->getTime().getSeconds();
     for(unsigned int i = 0; i < sizeof(this->commandQueue)/sizeof(U32); i++) {
-      if(this->commandQueue[i] <= currTime) {
+      if(this->commandQueue[i] != 0 && this->commandQueue[i] <= currTime) {
         this->commandQueue[i] = 0;
-        //TODO SEND COMMAND
+        this->ManagerOut_out(0, 0);
       }
     }
     this->tlmWrite_Demo_Scheduler_Queue_Size(this->GetQueuedCommandCount());
@@ -80,7 +80,7 @@ namespace Ref {
         const U32 cmdSeq
     )
   {
-    //this->ManagerOut_out(0, 1);
+    this->ManagerOut_out(0, 0);
     this->cmdResponse_out(opCode,cmdSeq,Fw::COMMAND_OK);
   }
 

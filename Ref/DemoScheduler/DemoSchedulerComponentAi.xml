@@ -6,12 +6,12 @@
     <import_port_type>Fw/Time/TimePortAi.xml</import_port_type>
     <comment>A simple demo scheduler component</comment>
     <ports>
-        <!-- Output ping port 
+        Output ping port 
         <port name="ManagerOut" data_type="Ref::DemoSchdManPort" kind="output" max_number="1">
             <comment>
             An output port for the Manager
             </comment>
-        </port> -->
+        </port>
         <port name="SchedIn" data_type="Sched" kind="async_input">
             <comment>
             The rate group scheduler input

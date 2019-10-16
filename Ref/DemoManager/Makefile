@@ -1,4 +1,4 @@
-MODULE_DIR = Ref/DemoSchdManPort
+MODULE_DIR = Ref/DemoManager
 MODULE = $(subst /,,$(MODULE_DIR))
 
 BUILD_ROOT ?= $(subst /$(MODULE_DIR),,$(CURDIR))
