@@ -87,6 +87,12 @@ Ref::DemoDriverComponentImpl driverDemo
 #endif
 ;
 
+Ref::DemoSchedulerComponentImpl schedulerDemo
+#if FW_OBJECT_NAMES == 1
+                    ("SDE")
+#endif
+;
+
 Ref::SendBuffImpl sendBuffComp
 #if FW_OBJECT_NAMES == 1
                     ("SBC")
@@ -169,6 +175,9 @@ void constructApp(int port_number, char* hostname) {
     // Init Demo Driver
     driverDemo.init();
 
+    // Init Demo Scheduler
+    schedulerDemo.init(10,0);
+
     // Initialize rate group driver
     rateGroupDriverComp.init();
 
@@ -215,6 +224,7 @@ void constructApp(int port_number, char* hostname) {
 
     /* Register commands */
     driverDemo.regCommands();
+    schedulerDemo.regCommands();
     sendBuffComp.regCommands();
     recvBuffComp.regCommands();
     cmdSeq.regCommands();
@@ -252,6 +262,8 @@ void constructApp(int port_number, char* hostname) {
     rateGroup1Comp.start(0, 120,10 * 1024);
     rateGroup2Comp.start(0, 119,10 * 1024);
     rateGroup3Comp.start(0, 118,10 * 1024);
+    // start scheduler
+    schedulerDemo.start(0, 130,10 * 1024);
     // start driver
     blockDrv.start(0,140,10*1024);
     // start dispatcher
@@ -305,6 +317,7 @@ void runcycles(NATIVE_INT_TYPE cycles) {
 }
 
 void exitTasks(void) {
+    schedulerDemo.exit();
     rateGroup1Comp.exit();
     rateGroup2Comp.exit();
     rateGroup3Comp.exit();
