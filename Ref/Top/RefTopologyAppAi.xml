@@ -814,19 +814,19 @@
 
 <connection name="DemoDriverReg">
 	<source component="demoDriver" port="CmdReg" type="CmdReg" num="0"/>
-	<target component="cmdDisp" port="compCmdReg" type="CmdReg" num="50"/>
+	<target component="cmdDisp" port="compCmdReg" type="CmdReg" num="15"/>
 </connection>
 <connection name="DemoManagerReg">
 	<source component="demoManager" port="CmdReg" type="CmdReg" num="0"/>
-	<target component="cmdDisp" port="compCmdReg" type="CmdReg" num="51"/>
+	<target component="cmdDisp" port="compCmdReg" type="CmdReg" num="16"/>
 </connection>
 
 <connection name="DemoDriverDisp">
-	<source component="cmdDisp" port="compCmdSend" type="Cmd" num="50"/>
+	<source component="cmdDisp" port="compCmdSend" type="Cmd" num="15"/>
 	<target component="demoDriver" port="CmdDisp" type="Cmd" num="0"/>
 </connection>
 <connection name="DemoManagerDisp">
-	<source component="cmdDisp" port="compCmdSend" type="Cmd" num="51"/>
+	<source component="cmdDisp" port="compCmdSend" type="Cmd" num="16"/>
 	<target component="demoManager" port="CmdDisp" type="Cmd" num="0"/>
 </connection>
 
@@ -864,15 +864,6 @@
 <connection name="DemoManagerTextTlm">
 	<source component="demoManager" port="Tlm" type="Tlm" num="0"/>
 	<target component="chanTlm" port="TlmRecv" type="Tlm" num="0"/>
-</connection>
-
-<connection name="DemoDriverTime">
-	<source component="demoDriver" port="Time" type="Time" num="0"/>
-	<target component="linuxTime" port="timeGetPort" type="Time" num="0"/>
-</connection>
-<connection name="DemoManagerTime">
-	<source component="demoManager" port="Time" type="Time" num="0"/>
-	<target component="linuxTime" port="timeGetPort" type="Time" num="0"/>
 </connection>
 
 <connection name="DemoDriverSendConnection">

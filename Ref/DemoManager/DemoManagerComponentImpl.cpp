@@ -84,7 +84,10 @@ namespace Ref {
         const U32 cmdSeq
     )
   {
-    // TODO
+    if (this->m_componentEnabled == true)
+    {
+      this->ManagerOut_out(0, 1);
+    }
     this->cmdResponse_out(opCode,cmdSeq,Fw::COMMAND_OK);
   }
 
