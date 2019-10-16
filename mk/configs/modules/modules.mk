@@ -94,7 +94,8 @@ REF_MODULES := \
 	Ref/SignalGen \
 	Ref/PingReceiver \
 	Ref/DemoDriverPort \
-	Ref/DemoDriver
+	Ref/DemoDriver \
+	Ref/DemoSchdManPort
 	
 Ref_MODULES := \
 	\
