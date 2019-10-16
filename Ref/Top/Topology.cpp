@@ -183,6 +183,17 @@ Svc::FatalHandlerComponentImpl fatalHandler
 #endif
 ;
 
+Ref::DemoDriverComponentImpl demoDriver
+#if FW_OBJECT_NAMES == 1
+    ("demoDriver")
+#endif
+;
+
+Ref::DemoManagerComponentImpl demoManager
+#if FW_OBJECT_NAMES == 1
+    ("demoManager")
+#endif
+;
 
 #if FW_OBJECT_REGISTRATION == 1
 
@@ -253,6 +264,8 @@ void constructApp(int port_number, char* hostname) {
 	fatalHandler.init(0);
 	health.init(25,0);
 	pingRcvr.init(10);
+    demoDriver.init();
+    demoManager.init(10,0);
     // Connect rate groups to rate group driver
     constructRefArchitecture();
 
@@ -271,6 +284,9 @@ void constructApp(int port_number, char* hostname) {
 	SG5.regCommands();
 	health.regCommands();
 	pingRcvr.regCommands();
+
+    demoDriver.regCommands();
+    demoManager.regCommands();
 
     // read parameters
     prmDb.readParamFile();
@@ -316,6 +332,8 @@ void constructApp(int port_number, char* hostname) {
     fileUplink.start(0, 100, 10*1024);
 
     pingRcvr.start(0, 100, 10*1024);
+
+    demoManager.start(0,100,10*1024);
 
     // Initialize socket server
     sockGndIf.startSocketTask(100, 10*1024, port_number, hostname, Svc::SocketGndIfImpl::SEND_UDP);
@@ -367,6 +385,7 @@ void exitTasks(void) {
     fileUplink.exit();
     fileDownlink.exit();
     cmdSeq.exit();
+    demoManager.exit();
 }
 
 void print_usage() {

@@ -1,0 +1,39 @@
+<component name="DemoDriver" kind="passive" namespace="Ref">
+    <import_port_type>Ref/DemoDriverPort/DemoDriverPortAi.xml</import_port_type>
+    <comment>A simple driver component to simulate a wrapped device driver</comment>
+    <ports>
+        <port name="ManagerIn" data_type="Ref::DemoDriverPort" kind="sync_input" max_number="1">
+            <comment>
+            An input port for the driver
+            </comment>
+        </port>
+        <port name="DriverOut" data_type="Ref::DemoDriverPort" kind="output"></port>
+    </ports>
+    <commands>
+        <command kind="sync" opcode="0" mnemonic="Driver_TestDriver">
+            <comment>
+            Command to test driver commands
+            </comment>
+        </command>
+    </commands>
+    <telemetry>
+        <channel id="0" name="Driver_DriverVal" data_type="U32">
+            <comment>
+            Driver Run Value
+            </comment>
+        </channel>
+    </telemetry>
+    <events>
+        <event id="0" name="Driver_CommandRecieved" severity="DIAGNOSTIC" format_string = "Driver Set to Output %d" >
+            <comment>
+            Got driver output
+            </comment>
+            <args>
+                <arg name="driver_output" type="U32">
+                    <comment>Driver Output</comment>
+                </arg>          
+            </args>
+        </event>
+     </events>
+</component>
+

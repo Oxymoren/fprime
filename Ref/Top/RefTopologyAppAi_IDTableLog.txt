@@ -27,7 +27,9 @@ fileDownlinkBufferManag |  401 (0x191)  |          20           |             20
        blockDrv         |  481 (0x1e1)  |          20           |             20             |               1               |         1        
      fileDownlink       |  501 (0x1f5)  |          20           |             20             |               4               |         4        
       textLogger        |  521 (0x209)  |          20           |             20             |             None              |         0        
-        cmdSeq          |  541 (0x21d)  |          23           |            inf.            |              23               |        23        
+        cmdSeq          |  541 (0x21d)  |          23           |            1459            |              23               |        23        
+      demoDriver        | 2000 (0x7d0)  |          20           |            100             |               1               |         1        
+      demoManager       | 2100 (0x834)  |          20           |            inf.            |               3               |         3        
 -------------------------------------------------------------------------------------------------------------------------------------
 | INSTANCE NAME                 - Name of the instance object.                                                                      |
 | BASE ID (HEX)                 - Base ID set for the instance.                                                                     |

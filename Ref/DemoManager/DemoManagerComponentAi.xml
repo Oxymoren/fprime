@@ -1,0 +1,33 @@
+<component name="DemoManager" kind="active" namespace="Ref">
+    <import_port_type>Ref/DemoDriverPort/DemoDriverPortAi.xml</import_port_type>
+    <import_port_type>Ref/DemoSchdManPort/DemoSchdManPortAi.xml</import_port_type>
+    <ports>
+        <port name="ManagerOut" data_type="Ref::DemoDriverPort" kind="output">
+        </port>
+        <port name="DriverIn" data_type="Ref::DemoDriverPort" kind="sync_input">
+        </port>
+        <port name="SchedulerIn" data_type="Ref::DemoSchdManPort" kind="sync_input">
+        </port>
+    </ports>
+    <commands>
+        <command kind="async" opcode="0" mnemonic="Manager_Test_Manager">
+        </command>
+        <command kind="async" opcode="1" mnemonic="Manager_Disable_Manager">
+        </command>
+        <command kind="async" opcode="2" mnemonic="Manager_Enable_Manager">
+        </command>
+    </commands>
+    <telemetry>
+        <channel id="0" name="Manager_ReceivedVal" data_type="U32">
+        </channel>
+        <channel id="1" name="Manager_IsActive" data_type="U32">
+        </channel>
+    </telemetry>
+    <events>
+        <event id="0" name="Manager_Command_Received" severity="DIAGNOSTIC" format_string="Manager %d">
+            <args>
+                <arg name="test" type="U32"></arg>
+            </args>
+        </event>
+    </events>
+</component>
